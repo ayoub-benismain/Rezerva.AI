@@ -41,10 +41,10 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <div className="w-28 h-25 sm:w-28 sm:h-25 overflow-hidden">
-              <img src={Logo} alt="Reserva.ai Logo" className="p-2" />
+              <img src={Logo} alt="Reserva.ai Logo" className="p-2 lg:p-0" />
             </div>
-            <span className="text-base sm:text-xl font-medium text-gray-900">
-              <span className="text-blue-700">Reserva</span>.ai
+            <span className="text-base sm:text-xl font-medium text-gray-900 hidden lg:visible">
+              <span className="text-blue-700 ">Reserva</span>.ai
             </span>
           </Link>
 
@@ -112,7 +112,7 @@ export default function Header() {
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <nav
-            className="lg:hidden border-t border-gray-200 py-4 flex flex-col space-y-4"
+            className="lg:hidden border-t border-gray-200 py-4 flex flex-col items-center space-y-4"
             aria-label="Mobile Navigation"
           >
             {mainPages.map(({ label, to }) => (

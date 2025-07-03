@@ -14,10 +14,10 @@ export default function Footer() {
                         {/* <!-- Navigation Links --> */}
                         <nav class="mt-10 text-sm" aria-label="quick links">
                             <div class="-my-1 flex justify-center gap-x-6">
-                            <a href="#" class="inline-block rounded-lg px-2 py-1 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">Home</a>
-                            <a href="#services" class="inline-block rounded-lg px-2 py-1 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">Services</a>
-                            <a href="#testimonials" class="inline-block rounded-lg px-2 py-1 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">Testimonials</a>
-                            <a href="#contact-us" class="inline-block rounded-lg px-2 py-1 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">Contact Us</a>
+                            <a href="#" class="inline-block rounded-lg px-2 py-1 text-xs lg:text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">Home</a>
+                            <a href="#services" class="inline-block rounded-lg px-2  py-1 text-xs lg:text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">Services</a>
+                            <a href="#testimonials" class="inline-block rounded-lg px-2 py-1 text-xs lg:text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">Testimonials</a>
+                            <a href="#contact-us" class="inline-block rounded-lg px-2 py-1 text-xs lg:text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900">Contact Us</a>
 
                             </div>
                         </nav>

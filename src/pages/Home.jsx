@@ -47,14 +47,14 @@ export default function Home() {
   return (
     <div className="scroll-smooth overflow-x-hidden">
       {/* Hero Section */}
-      <div className="relative w-screen min-h-screen">
+      <div className="relative w-screen min-h-screen pt-32 lg:pt-0">
         <div
           className={`transition duration-300 ${
             showVideo ? "blur-sm opacity-50" : "opacity-100"
           }`}
         >
-          <div className="flex flex-col justify-center items-center min-h-screen px-6 py-20 md:px-40 md:py-40">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold max-w-4xl p-5 leading-snug text-center">
+          <div className="flex flex-col lg:justify-center items-center min-h-screen px-6  lg:px-40 lg:py-40">
+            <h1 className="text-4xl lg:text-5xl font-bold max-w-4xl leading-snug text-center">
               Smart AI-powered&nbsp;
               <span className="text-blue-700">reservation</span>
               <br />
@@ -66,7 +66,7 @@ export default function Home() {
               offering personalized and efficient scheduling for users and businesses.
             </p>
 
-            <div className="flex md:flex-row justify-center gap-6 p-5 w-full max-w-md">
+            <div className="flex md:flex-row justify-center w-screen lg:w-full gap-6 p-5 max-w-md">
               <Button
                 textValue={"Get 7 days free"}
                 className="transition duration-300 ease-in-out hover:scale-105"
@@ -74,7 +74,7 @@ export default function Home() {
 
               <div
                 onClick={() => setShowVideo(true)}
-                className="py-2 px-4 flex justify-center items-center border border-gray-200 rounded-3xl cursor-pointer hover:border-gray-300 transition duration-300 ease-in-out"
+                className="py-2 px-4 flex justify-center items-center border border-gray-200 rounded-3xl cursor-pointer hover:border-gray-300 transition duration-300 ease-in-out w-2/3 lg:w-auto"
               >
                 <FaPlay className="text-blue-600 mx-2" />
                 <span>Watch video</span>
