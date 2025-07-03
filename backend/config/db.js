@@ -1,10 +1,11 @@
 import mysql from "mysql2/promise";
+import dotenv from "dotenv";
+dotenv.config();
 
-console.log("before the try in db.js");
 const db = mysql.createPool({
-  host: "127.0.0.1",
-  user: "root",
-  password: "",
-  database: "db_bookini",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PWD,
+  database: process.env.DB_NAME,
 });
 export default db;
