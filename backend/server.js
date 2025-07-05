@@ -1,15 +1,25 @@
 import express from "express";
-import dotenv from "dotenv";
+import cors from "cors";
 import cookieParser from "cookie-parser";
-import authRouter from "./routes/authRoute.js";
+import dotenv from "dotenv";
+import authRoute from "./routes/authRoute.js";
 
 dotenv.config();
-
 const app = express();
 
-app.use(express.json());
-app.use("/", authRouter);
+// ✅ Add this exactly like this
+app.use(cors({
+  origin: "http://localhost:5173", // your frontend origin
+  credentials: true, // allow sending cookies if needed
+}));
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
+app.use(express.json());
+app.use(cookieParser());
+
+// your routes
+app.use("/", authRoute);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
