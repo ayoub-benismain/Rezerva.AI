@@ -29,16 +29,16 @@ export default function RegisterPage() {
       pwd: password,
       phone_num: phoneNumber,
     };
-
+    console.log("sdfghjsdhgjsdhgjhjsdghjsdjghsdg");
     try {
-      const response = await fetch("http://localhost:3000/register", {
+      const response = await fetch("http://localhost:5001/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
       const resData = await response.json();
-
+      
       if (response.ok) {
         setSuccessMsg("✅ Registration successful! Redirecting to login...");
         setTimeout(() => {
@@ -48,7 +48,7 @@ export default function RegisterPage() {
         setError(resData.message || "Registration failed.");
       }
     } catch (err) {
-      setError("Network error, please try again.");
+      setError("Network error, please try again." + err);
     } finally {
       setLoading(false);
     }

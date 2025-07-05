@@ -36,7 +36,7 @@ export const login = async (req, res) => {
     const isMatch = await bcrypt.compare(pwd, user[0].enc_pwd);
     if (!isMatch)
       return res.status(401).json({ message: "Invalid credentials" });
- 
+
     const accessToken = jwt.sign(
       { id: user[0].id, role: user[0].role },
       process.env.JWT_SECRET,
@@ -44,6 +44,7 @@ export const login = async (req, res) => {
         expiresIn: "15m",
       }
     );
+
     const refreshToken = jwt.sign(
       { id: user[0].id, role: user[0].role },
       process.env.REFRESH_TOKEN,
@@ -54,7 +55,8 @@ export const login = async (req, res) => {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     console.log(expiresAt);
     await db.query(
-      `INSERT into refresh_token(user_id, token, expires_at) VALUES ("${user[0].id}","${accessToken}","${expiresAt}")`
+      `INSERT into refresh_token(user_id, token, expires_at) VALUES (?, ?, ?)`,
+      [user[0].id, refreshToken, expiresAt]
     );
     res
       .status(201)
@@ -66,6 +68,8 @@ export const login = async (req, res) => {
       })
       .json({ token: accessToken, role: user[0].role });
   } catch (error) {
-    return res.status(500).json({ message: "Server error", err: error });
+    return res
+      .status(500)
+      .json({ message: "Server error " + error, err: error });
   }
 };

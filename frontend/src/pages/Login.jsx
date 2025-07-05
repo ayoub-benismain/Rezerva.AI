@@ -20,7 +20,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch("http://localhost:5001/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -37,7 +37,7 @@ export default function LoginPage() {
         setError(data.message || "Login failed");
       }
     } catch (err) {
-      setError("Network error, please try again");
+      setError("Network error, please try again "+err);
     } finally {
       setLoading(false);
     }
