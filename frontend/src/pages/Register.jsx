@@ -1,8 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import logo from "../assets/logo.png";
 import registerImage from "../assets/loginImage.jpg";
 
 export default function RegisterPage() {
+  const navigate = useNavigate();
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccessMsg("");
+    setLoading(true);
+
+    const data = {
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      pwd: password,
+      phone_num: phoneNumber,
+    };
+
+    try {
+      const response = await fetch("http://localhost:3000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const resData = await response.json();
+
+      if (response.ok) {
+        setSuccessMsg("✅ Registration successful! Redirecting to login...");
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000); // wait 3 seconds before redirect
+      } else {
+        setError(resData.message || "Registration failed.");
+      }
+    } catch (err) {
+      setError("Network error, please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="relative flex min-h-screen justify-center md:px-12 lg:px-0">
       {/* Left: Registration Form */}
@@ -18,14 +69,30 @@ export default function RegisterPage() {
           {/* Heading */}
           <h2 className="text-lg font-semibold text-gray-900">Get started for free</h2>
           <p className="mt-2 text-sm text-gray-700">
-            Already registered?{' '}
+            Already registered?{" "}
             <a href="/login" className="font-medium text-blue-600 hover:underline">
               Sign in
-            </a>{' '}to your account.
+            </a>{" "}
+            to your account.
           </p>
 
+          {/* Success Message */}
+          {successMsg && (
+            <div className="mt-4 mb-4 rounded bg-green-100 p-3 text-green-800">
+              {successMsg}
+            </div>
+          )}
+
+          {/* Error Message */}
+          {error && (
+            <div className="mt-4 mb-4 rounded bg-red-100 p-3 text-red-700">{error}</div>
+          )}
+
           {/* Form */}
-          <form className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
+          <form
+            onSubmit={handleSubmit}
+            className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2"
+          >
             {/* First Name */}
             <div>
               <label htmlFor="first_name" className="mb-3 block text-sm font-medium text-gray-700">
@@ -37,6 +104,8 @@ export default function RegisterPage() {
                 type="text"
                 autoComplete="given-name"
                 required
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 className="block w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm"
               />
             </div>
@@ -52,6 +121,8 @@ export default function RegisterPage() {
                 type="text"
                 autoComplete="family-name"
                 required
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 className="block w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm"
               />
             </div>
@@ -67,6 +138,8 @@ export default function RegisterPage() {
                 type="email"
                 autoComplete="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="block w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm"
               />
             </div>
@@ -82,6 +155,8 @@ export default function RegisterPage() {
                 type="password"
                 autoComplete="new-password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="block w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm"
               />
             </div>
@@ -92,6 +167,7 @@ export default function RegisterPage() {
               <div className="flex gap-2">
                 <select
                   name="country_code"
+                  disabled
                   className="w-28 rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm"
                 >
                   <option value="+216">🇹🇳 +216</option>
@@ -101,6 +177,8 @@ export default function RegisterPage() {
                   type="tel"
                   placeholder="12 345 678"
                   required
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                   className="flex-1 rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm"
                 />
               </div>
@@ -110,9 +188,10 @@ export default function RegisterPage() {
             <div className="col-span-full">
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center rounded-full bg-blue-600 py-2 px-4 text-sm font-semibold text-white hover:bg-blue-500 active:bg-blue-800 focus-visible:outline focus-visible:outline-blue-600 focus-visible:outline-offset-2"
+                disabled={loading}
+                className="w-full inline-flex items-center justify-center rounded-full bg-blue-600 py-2 px-4 text-sm font-semibold text-white hover:bg-blue-500 active:bg-blue-800 focus-visible:outline focus-visible:outline-blue-600 focus-visible:outline-offset-2 disabled:opacity-50"
               >
-                Sign up <span aria-hidden="true">→</span>
+                {loading ? "Registering..." : "Sign up"} <span aria-hidden="true">→</span>
               </button>
             </div>
           </form>
@@ -123,7 +202,7 @@ export default function RegisterPage() {
       <div className="hidden sm:block lg:relative lg:flex-1">
         <img
           src={registerImage}
-          alt=""
+          alt="Register Background"
           loading="lazy"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
