@@ -1,15 +1,24 @@
+// controllers/logoutController.js
 import db from "../config/db.js";
 
 export const logout = async (req, res) => {
-  const token = req.cookie.jid;
-  if (token)
-    await db.query(`DELETE from refresh_token where token = "${token}"`);
+  try {
+    const token = req.cookies.jid;
+    if (!token) return res.sendStatus(204); // No content
 
-  res
-    .clearCookie("jid", {
+    // Remove refresh token from DB
+    await db.query(`DELETE FROM refresh_token WHERE token = ?`, [token]);
+
+    // Clear cookie
+    res.clearCookie("jid", {
       httpOnly: true,
       sameSite: "Strict",
-      secure: true,
-    })
-    .json({ message: "Log out" });
+      // secure: process.env.NODE_ENV === "production",
+    });
+
+    res.sendStatus(204);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Logout failed" });
+  }
 };
