@@ -41,7 +41,7 @@ export const login = async (req, res) => {
       { id: user[0].id, role: user[0].role },
       process.env.JWT_SECRET,
       {
-        expiresIn: "15s",
+        expiresIn: "15m",
       }
     );
     const refreshToken = jwt.sign(
@@ -60,9 +60,9 @@ export const login = async (req, res) => {
       .status(201)
       .cookie("jid", refreshToken, {
         httpOnly: true,
-        // secure: process.env.NODE_ENV === "production", // uncomment in production
+        //secure: process.env.NODE_ENV === "productuion", uncomment this line when deploying
         sameSite: "Strict",
-        expires: expiresAt, // <-- fix here
+        expire: expiresAt,
       })
       .json({ token: accessToken, role: user[0].role });
   } catch (error) {
