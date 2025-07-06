@@ -16,11 +16,30 @@ export default function RegisterPage() {
   const [successMsg, setSuccessMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Password validation states
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasLowercase = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccessMsg("");
     setLoading(true);
+
+    // Frontend validation before sending to backend
+    if (!hasUppercase || !hasLowercase || !hasNumber || !hasSymbol) {
+      setError("Password must contain uppercase, lowercase, number, and symbol.");
+      setLoading(false);
+      return;
+    }
+
+    if (phoneNumber.length !== 8) {
+      setError("Phone number must be exactly 8 digits.");
+      setLoading(false);
+      return;
+    }
 
     const data = {
       first_name: firstName,
@@ -29,7 +48,7 @@ export default function RegisterPage() {
       pwd: password,
       phone_num: phoneNumber,
     };
-    console.log("sdfghjsdhgjsdhgjhjsdghjsdjghsdg");
+
     try {
       const response = await fetch("http://localhost:5001/register", {
         method: "POST",
@@ -38,7 +57,7 @@ export default function RegisterPage() {
       });
 
       const resData = await response.json();
-      
+
       if (response.ok) {
         setSuccessMsg("✅ Registration successful! Redirecting to login...");
         setTimeout(() => {
@@ -53,6 +72,12 @@ export default function RegisterPage() {
       setLoading(false);
     }
   };
+
+  // Helper to style criteria text
+  const getCriteriaClass = (condition) =>
+    condition
+      ? "text-green-600 font-semibold"
+      : "text-red-600 font-semibold";
 
   return (
     <div className="relative flex min-h-screen justify-center md:px-12 lg:px-0">
@@ -159,6 +184,13 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="block w-full rounded-md border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-blue-500 sm:text-sm"
               />
+              {/* Password Criteria */}
+              <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
+                <p className={getCriteriaClass(hasUppercase)}>• Uppercase letter</p>
+                <p className={getCriteriaClass(hasLowercase)}>• Lowercase letter</p>
+                <p className={getCriteriaClass(hasNumber)}>• Number</p>
+                <p className={getCriteriaClass(hasSymbol)}>• Symbol (!@#$...)</p>
+              </div>
             </div>
 
             {/* Phone Number */}
