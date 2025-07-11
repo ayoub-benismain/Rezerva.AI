@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import Logo from "../assets/Human Tech.png";
+import Logo from "../assets/lg.png";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
-  const mainPages = [
-    { label: "Home", to: "/" },
-  ];
+  const mainPages = [{ label: "Home", to: "/" }];
 
   const sections = [
-    { label: "Services", href: "services" }, // remove "#" here
+    { label: "Services", href: "services" },
     { label: "Testimonials", href: "testimonials" },
     { label: "Contact Us", href: "contact" },
   ];
@@ -24,7 +22,7 @@ export default function Header() {
 
   const isHomePage = location.pathname === "/";
 
-  // Smooth scroll handler
+  // Smooth scroll handler for anchors
   const handleSmoothScroll = (e, id) => {
     e.preventDefault();
     const element = document.getElementById(id);
@@ -34,13 +32,22 @@ export default function Header() {
     }
   };
 
+  // Scroll to top for Home link when already on home page
+  const handleHomeClick = (e, to) => {
+    if (location.pathname === to) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setIsMobileMenuOpen(false);
+    }
+  };
+
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <div className="w-28 h-25 sm:w-28 sm:h-25 overflow-hidden">
+            <div className="w-26 h-22 sm:w-26 sm:h-22 overflow-hidden">
               <img src={Logo} alt="Reserva.ai Logo" className="p-2 lg:p-0" />
             </div>
             <span className="text-base sm:text-xl font-medium text-gray-900 hidden lg:visible">
@@ -53,9 +60,14 @@ export default function Header() {
             className="hidden lg:flex items-center space-x-2"
             aria-label="Primary Navigation"
           >
-            {/* Home link */}
+            {/* Home link with scroll to top */}
             {mainPages.map(({ label, to }) => (
-              <Link key={label} to={to} className={navLinkClasses}>
+              <Link
+                key={label}
+                to={to}
+                className={navLinkClasses}
+                onClick={(e) => handleHomeClick(e, to)}
+              >
                 {label}
               </Link>
             ))}
@@ -116,7 +128,12 @@ export default function Header() {
             aria-label="Mobile Navigation"
           >
             {mainPages.map(({ label, to }) => (
-              <Link key={label} to={to} className={navLinkClasses}>
+              <Link
+                key={label}
+                to={to}
+                className={navLinkClasses}
+                onClick={(e) => handleHomeClick(e, to)}
+              >
                 {label}
               </Link>
             ))}

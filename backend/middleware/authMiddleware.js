@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import db from "../config/db.js";
-import { logout } from "../controllers/logoutController.js";
 
 export const jwtVerification = async (req, res, next) => {
   const tokenHead = req.header("Authorization");
